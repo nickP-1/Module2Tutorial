@@ -1,15 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Bootstrap 5 example</title>
+        <title>Score keeper</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <div class="container p-5 my-5 bg-dark text-white">
-            <h1>Hello, world!</h1>
-            <p>This is a simple example of a Bootstrap 5 page.</p>
-        </div>
+            <h1>Keeping Score</h1>
+            <p>Keeping score is as important to your games as it is ours so track your scores here the best rated score tracker in the 10 galaxies of mundo!</p>
+            <p class = "h2">Enter scores below:</p>
+
+            <div class="table-responsive-md score-table">
+                <table class="table table-dark table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Round</th>
+                        <th scope="col">Player 1</th>
+                        <th scope="col">Player 2</th>
+                        <th scope="col">Player 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <script>
+                        for (let round = 1; round <= 10; round++) { 
+                        document.write(`
+                            <tr>
+                                <th scope="row">${round}</th>
+                                <td><input type="number" min="0" class="form-control score-input" data-player="1" aria-label="Player 1 round ${round} score"></td>
+                                <td><input type="number" min="0" class="form-control score-input" data-player="2" aria-label="Player 2 round ${round} score"></td>
+                                <td><input type="number" min="0" class="form-control score-input" data-player="3" aria-label="Player 3 round ${round} score"></td>
+                            </tr>
+                        `);
+                        }
+                    </script>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">Total</th>
+                        <td id="total-player-1">0</td>
+                        <td id="total-player-2">0</td>
+                        <td id="total-player-3">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+            </div>
+            </div>            
+
+        <script>
+            function updateTotals() {
+                for (let player = 1; player <= 3; player++) {
+                    const scores = document.querySelectorAll(`[data-player="${player}"]`);
+                    const total = [...scores].reduce((sum, score) => sum + (Number(score.value) || 0), 0);
+                    document.getElementById(`total-player-${player}`).textContent = total;
+                }
+            }
+
+            document.querySelectorAll('.score-input').forEach((input) => {
+                input.addEventListener('input', updateTotals);
+            });
+        </script>
     </body>
 </html>
